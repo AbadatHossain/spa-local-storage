@@ -1,31 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Header from './components/Header/Header.jsx'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Home from './components/Home/Home'
-import SideCart from './components/SiteCart/SideCart'
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import Header from "./components/Header/Header.jsx";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Home from "./components/Home/Home";
+import SideCart from "./components/SiteCart/SideCart";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [watchTime, setWatchTime] = useState(0);
+  // const [count, setCount] = useState();
+  const handleWatchTime = (time) => {
+    // console.log(time)
+    const previousWatchTime = JSON.parse(localStorage.getItem("watchTime"));
+    // console.log(previousWatchTime)
+    if (previousWatchTime) {
+      // console.log(previousWatchTime)
+      const sum = previousWatchTime + time
+      // console.log(sum);
+      localStorage.setItem("watchTime", sum);
+      setWatchTime(sum)
+    } else {
+      localStorage.setItem("watchTime", time);
+      setWatchTime(time)
+    }
+  };
 
   return (
     <div className="App">
-    <div>
-    <Header></Header>
-    </div>
-    <div className="main d-flex justify-content-between mt-3">
-      <div className="home-container col-md-8 bg-warning">
-        <Home></Home>
+      <div>
+        <Header></Header>
       </div>
-      <div className="aideCart col-md-4 bg-info">
-        <SideCart></SideCart>
+      <div className="main row d-flex justify-content-between mt-3">
+        <div className="home-container col-md-8">
+          <Home handleWatchTime={handleWatchTime}></Home>
+        </div>
+        <div className="aideCart col-md-4 card">
+          <SideCart watchTime={watchTime}></SideCart>
+        </div>
       </div>
+      <ToastContainer></ToastContainer>
     </div>
-      
-    </div>
-  )
+  );
 }
 
-export default App
+export default App;
